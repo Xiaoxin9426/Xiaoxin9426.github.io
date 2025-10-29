@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>爱心祝福窗口</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #fff0f5; /* 柔和浅粉色背景 */
+            position: relative;
+        }
+        /* 图片爱心样式 */
+        .heart {
+            position: absolute;
+            opacity: 0.8;
+            animation: float 3s ease-in-out infinite;
+            pointer-events: none; /* 不影响点击 */
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        /* 爱心浮动动画 */
+        @keyframes float {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-20px) scale(1.2);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 0.6;
+            }
+        }
+        /* 祝福窗口样式 */
+        .blessing-window {
+            position: absolute;
+            padding: 15px;
+            border: 1px solid #ffccd8;
+            border-radius: 8px;
+            box-shadow: 2px 2px 8px rgba(255,105,180,0.3);
+            font-family: "SimSun", "宋体", serif;
+            font-weight: normal;
+            font-size: 14px;
+            display: none;
+            background-color: rgba(255,255,255,0.9);
+            z-index: 10; /* 确保窗口在爱心上方 */
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // 祝福语数组
+        const blessings = [
+            "平安喜乐，万事顺遂",
+            "身体健康，笑口常开",
+            "前程似锦，未来可期",
+            "阖家幸福，团圆美满",
+            "心想事成，美梦成真",
+            "一帆风顺，步步高升",
+            "吉祥如意，福寿安康",
+            "好运连连，喜事多多",
+            "事业有成，财源广进",
+            "生活美满，幸福长久",
+            "平安吉祥，岁岁安康",
+            "工作顺利，生活愉快",
+            "青春永驻，活力四射",
+            "家庭和睦，幸福美满",
+            "学业进步，智慧增长",
+            "福禄双全，喜事临门",
+            "平安无恙，喜乐长安",
+            "日子红火，万事顺意",
+            "笑口常开，好运自来",
+            "吉祥如意，万事亨通",
+            "健康平安，快乐相伴",
+            "事业兴旺，财源滚滚",
+            "心想事成，万事如意",
+            "平安顺遂，喜乐无忧",
+            "家庭幸福，和睦安康",
+            "前程万里，事业辉煌",
+            "好运相伴，喜事不断",
+            "福寿绵长，幸福安康",
+            "生活甜蜜，万事顺意",
+            "工作顺心，生活舒心",
+            "吉祥高照，好运连连",
+            "平安是福，健康是宝",
+            "事事顺心，年年如意",
+            "幸福美满，快乐永远",
+            "事业顺利，大展宏图",
+            "好运常伴，心想事成",
+            "平安喜乐，岁岁无忧",
+            "家庭美满，幸福团圆",
+            "学业有成，前程似锦",
+            "财源广进，富贵吉祥",
+            "健康长寿，快乐多多",
+            "万事如意，笑口常开",
+            "平安健康，幸福一生",
+            "事业高升，生活美满",
+            "好运当头，喜事临门",
+            "吉祥如意，幸福安康",
+            "生活愉快，万事顺利",
+            "福禄寿喜，样样俱全",
+            "平安顺利，心想事成",
+            "幸福快乐，健康平安",
+            "前程似锦，幸福美满",
+            "万事如意，阖家幸福"
+        ];
+
+        // 爱心图片素材数组（多种样式的爱心图片）
+        const heartImages = [
+            "https://img.icons8.com/color/48/000000/heart.png"
+        ];
+
+        // 生成随机颜色（粉色系）
+        function getRandomColor() {
+            const r = Math.floor(Math.random() * 80) + 175;
+            const g = Math.floor(Math.random() * 100) + 155;
+            const b = Math.floor(Math.random() * 120) + 135;
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        // 生成随机位置
+        function getRandomPosition() {
+            const maxX = window.innerWidth - 150;
+            const maxY = window.innerHeight - 100;
+            const x = Math.floor(Math.random() * maxX);
+            const y = Math.floor(Math.random() * maxY);
+            return { x, y };
+        }
+
+        // 创建跳动爱心（使用图片素材）
+        function createHearts() {
+            const heartCount = 30; // 爱心数量
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                
+                // 随机选择爱心图片
+                const randomImg = heartImages[Math.floor(Math.random() * heartImages.length)];
+                heart.style.backgroundImage = `url(${randomImg})`;
+                
+                // 随机位置
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+                heart.style.left = `${x}px`;
+                heart.style.top = `${y}px`;
+                
+                // 随机大小
+                const size = Math.random() * 20 + 20; // 20-40px之间
+                heart.style.width = `${size}px`;
+                heart.style.height = `${size}px`;
+                
+                // 随机动画延迟和时长
+                heart.style.animationDelay = `${Math.random() * 5}s`;
+                heart.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                
+                document.body.appendChild(heart);
+            }
+        }
+
+        // 创建祝福窗口
+        function createWindow(index) {
+            const windowElement = document.createElement('div');
+            windowElement.className = 'blessing-window';
+            windowElement.style.backgroundColor = getRandomColor();
+            const position = getRandomPosition();
+            windowElement.style.left = `${position.x}px`;
+            windowElement.style.top = `${position.y}px`;
+            windowElement.textContent = blessings[index];
+            
+            document.body.appendChild(windowElement);
+            
+            // 淡入效果
+            setTimeout(() => {
+                windowElement.style.display = 'block';
+                windowElement.style.transition = 'opacity 0.5s';
+                windowElement.style.opacity = 1;
+            }, 100);
+        }
+
+        // 先创建爱心，再创建窗口
+        createHearts();
+        for (let i = 0; i < 52; i++) {
+            setTimeout(() => {
+                createWindow(i);
+            }, i * 300); // 间隔300毫秒打开窗口
+        }
+    </script>
+</body>
+</html>
